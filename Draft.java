@@ -13,25 +13,54 @@ class Draft {
   ArrayList<DEF> DEFUndrafted;
   League league;
 
-  void addQB(String name,  double passYds, int passTDs, double rushYds, int rushTDs, int interceptions, 
+  //EFFECT: creates a new quarterback and adds it to list of undrafted players
+  void addQB(String name,  int passYds, int passTDs, int rushYds, int rushTDs, int interceptions, 
       int fumbles, int twoPtCon) {
     this.undrafted.add(new QB(name, this.league, passYds, passTDs, rushYds, rushTDs, interceptions, fumbles, twoPtCon));
   }
 
-  void addRB() {
+  //EFFECT: creates a new running back and adds it to list of undrafted players
+  void addRB(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
+      int fumbles, int twoPtCons) {
+    this.undrafted.add(new RB(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
+        fumbles, twoPtCons));
   }
 
-  void addWR() {
-
+  //EFFECT: creates a new wide receiver and adds it to list of undrafted players
+  void addWR(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
+      int fumbles, int twoPtCons) {
+    this.undrafted.add(new WR(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
+        fumbles, twoPtCons));
   }
 
-  void addTE() {
-
+  //EFFECT: creates a new tight end and adds it to list of undrafted players
+  void addTE(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
+      int fumbles, int twoPtCons) {
+    this.undrafted.add(new TE(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
+        fumbles, twoPtCons));
   }
+
+  //EFFECT: creates a new kicker and adds it to list of undrafted players
+  void addK(String name, int PATsMade, int PATsMissed, int FG039Made, int FG039Missed,
+      int FG4049Made, int FG4049Missed, int FG50Made, int FG50Missed) {
+    this.undrafted.add(new K(name, this.league, PATsMade, PATsMissed, FG039Made, FG039Missed,
+        FG4049Made, FG4049Missed, FG50Made, FG50Missed));
+  }
+
+  //EFFECT: creates a new defense and adds it to list of undrafted players
+  void addDEF(String name, int sacks, int interceptions, int fumbles, int safeties, int defTDs,
+      int retTDs, int ptsAllowed0, int ptsAllowed16, int ptsAllowed713, int ptsAllowed1420, 
+      int ptsAllowed2127, int ptsAllowed2834, int ptsAllowed35) {
+    this.undrafted.add(new DEF(name, this.league, sacks, interceptions, fumbles, safeties, defTDs,
+        retTDs, ptsAllowed0, ptsAllowed16, ptsAllowed713, ptsAllowed1420, ptsAllowed2127, ptsAllowed2834,
+        ptsAllowed35));
+  }
+
   //Effect: Adds all the Players to a list of undrafted players
   void createUndraftedList() {
-    
+
   }
+
   //Effect: Adds all the Players to a list of their positions
   void createUndraftedPlayersList() {
     for(Player p: this.undrafted) {
@@ -118,9 +147,13 @@ class Draft {
       downHeap(0, end);
     }
   }
-  void calculateXVal(ArrayList<Player> players) {
+
+  //calculates X value for every player in the list
+  //will call for each individual position
+  void calculateXVal(ArrayList<Player> players, int benchmark) {
     for(Player p: players) {
-      
+      p.xValue = p.projectedPoints - players.get(benchmark).projectedPoints;
     }
   }
 }
+
