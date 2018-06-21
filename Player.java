@@ -213,5 +213,4 @@ class DEF extends Player{
         + this.ptsAllowed2127 * lg.ptAllowed2127 + this.ptsAllowed2834 * lg.ptAllowed2834
         + this.ptsAllowed35 * this.ptsAllowed35;
   }
-
 }
