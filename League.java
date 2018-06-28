@@ -13,11 +13,12 @@ class League{
   double twoPtCon;
   double PATMade;
   double PATMissed;
-  double FG019;
-  double FG2029;
-  double FG3039;
-  double FG4049;
-  double FG50;
+  double FG039Made;
+  double FG039Missed;
+  double FG4049Made;
+  double FG4049Missed;
+  double FG50Made;
+  double FG50Missed;
   double sack;
   double defInt;
   double defFumble;
@@ -31,6 +32,6 @@ class League{
   double ptAllowed2127;
   double ptAllowed2834;
   double ptAllowed35;
-  
-  
+
+
 }
