@@ -1,6 +1,18 @@
 import java.util.ArrayList;
 
-class League{
+class League {
+  int yourPick; //what's your pick number? Change every round (numTeams - yourPick)
+  int numTeams; //number of teams in league
+  int pickNum; //current pick that the draft is on
+  int qbNum; //how many QBs start
+  int rbNum; //how many RBs start
+  int wrNum; //how many WRs start
+  int teNum; //how many TEs start
+  int flexNum; //how many flex start
+  int kickNum; //how many kickers start
+  int defNum; //how many defenses start
+  int benchNum; //how many players on your bench
+  int rosterNum; //size of roster: qbNum + rbNum + wrNum + teNum + flexNum + kickNum + defNum + benchNum
   double passPtsPerYd;
   double passTD;
   double passInt;
@@ -32,6 +44,4 @@ class League{
   double ptAllowed2127;
   double ptAllowed2834;
   double ptAllowed35;
-
-
 }
