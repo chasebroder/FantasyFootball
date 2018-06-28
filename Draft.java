@@ -7,14 +7,30 @@ class Draft {
   int pickNum;
   ArrayList<Player> undrafted;
   ArrayList<Player> drafted;
-  ArrayList<QB> QBUndrafted;
-  ArrayList<RB> RBUndrafted;
-  ArrayList<WR> WRUndrafted;
-  ArrayList<TE> TEUndrafted;
-  ArrayList<K> KUndrafted;
-  ArrayList<DEF> DEFUndrafted;
+  ArrayList<Player> QBUndrafted;
+  ArrayList<Player> RBUndrafted;
+  ArrayList<Player> WRUndrafted;
+  ArrayList<Player> TEUndrafted;
+  ArrayList<Player> KUndrafted;
+  ArrayList<Player> DEFUndrafted;
   League league;
   Team myTeam;
+  Draft(ArrayList<Player> undrafted, League league, Team myTeam){
+    this.undrafted = undrafted;
+    this.league = league;
+    this.myTeam = myTeam;
+    this.heapBuild();
+    this.heapSort();
+    this.createUndraftedPlayersList();
+    this.calculateXValue(this.QBUndrafted, 15);
+    this.calculateXValue(this.RBUndrafted, 36);
+    this.calculateXValue(this.WRUndrafted, 38);
+    this.calculateXValue(this.TEUndrafted, 8);
+    this.calculateXValue(this.KUndrafted, 1);
+    this.calculateXValue(this.DEFUndrafted, 2);
+    this.heapBuildX();
+    this.heapSortX();
+  }
 
   //EFFECT: creates a new quarterback and adds it to list of undrafted players
   void addQB(String name,  int passYds, int passTDs, int rushYds, int rushTDs, int interceptions, 
@@ -89,6 +105,11 @@ class Draft {
   void heapBuild() {
     for (int i = 1; i < this.undrafted.size(); i++) {
       upHeap(i);
+    }
+  }
+  void heapBuildX() {
+    for (int i = 1; i < this.undrafted.size(); i++) {
+      upHeapX(i);
     }
   }
   // Effect:Used when adding elements to the heap; bubbles up the element until a
@@ -188,6 +209,20 @@ class Draft {
       end--;
       i++;
       downHeap(0, end);
+    }
+  }
+  // Effect:sorts the heap from lowest element value to highest
+  void heapSortX() {
+    int i = 0;
+    int end = this.undrafted.size() - 1;
+    while (i < this.undrafted.size()) {
+      Player max = this.undrafted.get(0);
+      Player last = this.undrafted.get(end);
+      this.undrafted.set(0, last);
+      this.undrafted.set(end, max);
+      end--;
+      i++;
+      downHeapX(0, end);
     }
   }
   //Effect:Calculates the xValue of Players
