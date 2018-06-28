@@ -15,6 +15,36 @@ abstract class Player{
   abstract void projectPoints(League lg);
 }
 
+//RBs, WRs, TEs will extend this
+abstract class Flex extends Player {
+  int rushYds;
+  int rushTDs;
+  int receptions;
+  int receivingYds;
+  int receivingTDs;
+  int fumbles;
+  int twoPtCons;
+
+  Flex(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
+      int fumbles, int twoPtCons) {
+    super(name, lg);
+    this.rushYds = rushYds;
+    this.rushTDs = rushTDs;
+    this.receptions = receptions;
+    this.receivingYds = receivingYds;
+    this.receivingTDs = receivingTDs;
+    this.fumbles = fumbles;
+    this.twoPtCons = twoPtCons;
+  }
+
+  //projects total points for flex given league's settings
+  void projectPoints(League lg) {
+    this.projectedPoints = this.rushYds * lg.rushPtsPerYd + this.rushTDs * lg.rushTD
+        + this.receptions * lg.pointsPerReception + this.receivingYds * lg.recPtsPerYD
+        + this.receivingTDs * lg.recTD + this.fumbles * lg.fumble + this.twoPtCons * lg.twoPtCon;
+  }  
+}
+
 //Quarterback
 class QB extends Player{
   int passYds;
@@ -49,92 +79,26 @@ class QB extends Player{
 }
 
 //Running Back
-class RB extends Player{
-  int rushYds;
-  int rushTDs;
-  int receptions;
-  int receivingYds;
-  int receivingTDs;
-  int fumbles;
-  int twoPtCons;
-
+class RB extends Flex {
   RB(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
       int fumbles, int twoPtCons) {
-    super(name, lg);
-    this.rushYds = rushYds;
-    this.rushTDs = rushTDs;
-    this.receptions = receptions;
-    this.receivingYds = receivingYds;
-    this.receivingTDs = receivingTDs;
-    this.fumbles = fumbles;
-    this.twoPtCons = twoPtCons;
-  }
-
-  //projects total points for running back given league's settings
-  void projectPoints(League lg) {
-    this.projectedPoints = this.rushYds * lg.rushPtsPerYd + this.rushTDs * lg.rushTD
-        + this.receptions * lg.pointsPerReception + this.receivingYds * lg.recPtsPerYD
-        + this.receivingTDs * lg.recTD + this.fumbles * lg.fumble + this.twoPtCons * lg.twoPtCon;
+    super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
   }
 }
 
 //Wide Receiver
-class WR extends Player{
-  int rushYds;
-  int rushTDs;
-  int receptions;
-  int receivingYds;
-  int receivingTDs;
-  int fumbles;
-  int twoPtCons;
-
+class WR extends Flex {
   WR(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
       int fumbles, int twoPtCons) {
-    super(name, lg);
-    this.rushYds = rushYds;
-    this.rushTDs = rushTDs;
-    this.receptions = receptions;
-    this.receivingYds = receivingYds;
-    this.receivingTDs = receivingTDs;
-    this.fumbles = fumbles;
-    this.twoPtCons = twoPtCons;
-  }
-
-  //projects total points for wide receiver given league's settings
-  void projectPoints(League lg) {
-    this.projectedPoints = this.rushYds * lg.rushPtsPerYd + this.rushTDs * lg.rushTD
-        + this.receptions * lg.pointsPerReception + this.receivingYds * lg.recPtsPerYD
-        + this.receivingTDs * lg.recTD + this.fumbles * lg.fumble + this.twoPtCons * lg.twoPtCon;
+    super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
   }
 }
 
 //Tight End
-class TE extends Player{
-  int rushYds;
-  int rushTDs;
-  int receptions;
-  int receivingYds;
-  int receivingTDs;
-  int fumbles;
-  int twoPtCons;
-
+class TE extends Flex{
   TE(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
       int fumbles, int twoPtCons) {
-    super(name, lg);
-    this.rushYds = rushYds;
-    this.rushTDs = rushTDs;
-    this.receptions = receptions;
-    this.receivingYds = receivingYds;
-    this.receivingTDs = receivingTDs;
-    this.fumbles = fumbles;
-    this.twoPtCons = twoPtCons;
-  }
-
-  //projects total points for tight end given league's settings
-  void projectPoints(League lg) {
-    this.projectedPoints = this.rushYds * lg.rushPtsPerYd + this.rushTDs * lg.rushTD
-        + this.receptions * lg.pointsPerReception + this.receivingYds * lg.recPtsPerYD
-        + this.receivingTDs * lg.recTD + this.fumbles * lg.fumble + this.twoPtCons * lg.twoPtCon;
+    super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
   }
 }
 
