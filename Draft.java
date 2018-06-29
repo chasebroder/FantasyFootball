@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 class Draft {
   public static void Main(String[] args) {
-    
+
   }
-  int pickNum;
+
   ArrayList<Player> undrafted;
   ArrayList<Player> drafted;
   ArrayList<Player> QBUndrafted;
@@ -13,8 +13,9 @@ class Draft {
   ArrayList<Player> TEUndrafted;
   ArrayList<Player> KUndrafted;
   ArrayList<Player> DEFUndrafted;
-  League league;
-  Team myTeam;
+  League league; //rules of the league
+  Team myTeam; //keeps track of players on your team
+
   Draft(ArrayList<Player> undrafted, League league, Team myTeam){
     this.undrafted = undrafted;
     this.league = league;
@@ -68,16 +69,16 @@ class Draft {
 
   //EFFECT: creates a new defense and adds it to list of undrafted players
   void addDEF(String name, int sacks, int interceptions, int fumbles, int safeties, int defTDs,
-      int retTDs, int ptsAllowed0, int ptsAllowed16, int ptsAllowed713, int ptsAllowed1420, 
-      int ptsAllowed2127, int ptsAllowed2834, int ptsAllowed35) {
+      int retTDs, int ptsAllowed) {
     this.undrafted.add(new DEF(name, this.league, sacks, interceptions, fumbles, safeties, defTDs,
-        retTDs, ptsAllowed0, ptsAllowed16, ptsAllowed713, ptsAllowed1420, ptsAllowed2127, ptsAllowed2834,
-        ptsAllowed35));
+        retTDs, ptsAllowed));
   }
+
   //Effect: Adds all the Players to a list of undrafted players
   void createUndraftedList() {
-    
+
   }
+
   //Effect: Adds all the Players to a list of their positions
   void createUndraftedPlayersList() {
     for(Player p: this.undrafted) {
@@ -107,11 +108,13 @@ class Draft {
       upHeap(i);
     }
   }
+
   void heapBuildX() {
     for (int i = 1; i < this.undrafted.size(); i++) {
       upHeapX(i);
     }
   }
+
   // Effect:Used when adding elements to the heap; bubbles up the element until a
   // heap is made
   void upHeap(int i) {
@@ -154,7 +157,7 @@ class Draft {
       downHeap(leftIdx, maxIdx);
     }
   }
-  // Effect:Used when adding elements to the heap; bubbles up the element until a
+  //Effect:Used when adding elements to the heap; bubbles up the element until a
   // heap is made
   void upHeapX(int i) {
     int parentIdx = ((i - 1) / 2);
@@ -196,7 +199,6 @@ class Draft {
       downHeap(leftIdx, maxIdx);
     }
   }
-
   // Effect:sorts the heap from lowest element value to highest
   void heapSort() {
     int i = 0;
@@ -211,6 +213,7 @@ class Draft {
       downHeap(0, end);
     }
   }
+
   // Effect:sorts the heap from lowest element value to highest
   void heapSortX() {
     int i = 0;
@@ -225,33 +228,66 @@ class Draft {
       downHeapX(0, end);
     }
   }
-  //Effect:Calculates the xValue of Players
+
+  //calculates X value for every player in the list
+  //will call for each individual position
   void calculateXValue(ArrayList<Player> players, int benchmark) {
     for(Player p: players) {
       p.xValue = p.projectedPoints - players.get(benchmark).projectedPoints;
     }
   }
+
+  //recalculates 
   void needFactor() {
     for(Player p: this.undrafted) {
-      if((p instanceof QB) && this.team.qbs >= 1) {
-        p.xValue = p.xValue*(1 - this.team.qbs *0.2);
+      if((p instanceof QB) && this.myTeam.qbs >= 1) {
+        p.xValue = p.xValue*(1 - this.myTeam.qbs *0.2);
       }
-      if((p instanceof Flex) && this.team.flex == 1 && this.myTeam.rbs >= 2) {
-        p.xValue = (1 - this.team.rbs-1 *0.2);
+      if((p instanceof Flex) && this.myTeam.flex == 1 && this.myTeam.rbs >= 2) {
+        p.xValue = (1 - this.myTeam.rbs-1 *0.2);
       }
-      if((p instanceof Flex) && this.team.flex == 1 && this.myTeam.wrs >= 2) {
-        p.xValue = (1 - this.team.wrs-1 *0.2);
+      if((p instanceof Flex) && this.myTeam.flex == 1 && this.myTeam.wrs >= 2) {
+        p.xValue = (1 - this.myTeam.wrs-1 *0.2);
       }
-      if((p instanceof Flex) && this.team.flex == 1 && this.myTeam.tes >= 1) {
-        p.xValue = (1 - this.team.tes *0.2);
+      if((p instanceof Flex) && this.myTeam.flex == 1 && this.myTeam.tes >= 1) {
+        p.xValue = (1 - this.myTeam.tes *0.2);
       }
-      if((p instanceof K) && this.team.k >= 1) {
-        p.xValue = p.xValue*(1 - this.team.k *0.2);
+      if((p instanceof K) && this.myTeam.k >= 1) {
+        p.xValue = p.xValue*(1 - this.myTeam.k *0.2);
       }
-      if((p instanceof DEF) && this.team.def >= 1) {
-        p.xValue = p.xValue*(1 - this.team.def *0.2);
+      if((p instanceof DEF) && this.myTeam.def >= 1) {
+        p.xValue = p.xValue*(1 - this.myTeam.def *0.2);
       }
     }
   }
 
+  //drafts a player
+  //EFFECT: removes player from undrafted and position undrafted arraylists
+  //If drafted to your team, calls other method on team
+  void draft(Player p) {
+    //is it your pick?
+    if (this.league.yourPick == this.league.pickNum) {
+      //need to make sure there's room on the bench: not too positive what to do otherwise
+      if (this.myTeam.bench.size() < this.league.benchNum) {
+        this.myTeam.draftPlayer(p, this.league);
+      }
+    }
+    this.undrafted.remove(p);
+    if (p instanceof QB) {
+      this.QBUndrafted.remove(p);
+    } else if (p instanceof RB) {
+      this.RBUndrafted.remove(p);
+    } else if (p instanceof WR) {
+      this.WRUndrafted.remove(p);
+    } else if (p instanceof TE) {
+      this.TEUndrafted.remove(p);
+    } else if (p instanceof K) {
+      this.KUndrafted.remove(p);
+    } else {
+      this.DEFUndrafted.remove(p);
+    }
+    //increments pick number by one
+    this.league.pickNum += 1;
+  }
 }
+
