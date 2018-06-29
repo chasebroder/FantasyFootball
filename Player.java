@@ -13,6 +13,9 @@ abstract class Player{
 
   //projects points for player given estimated statistics
   abstract void projectPoints(League lg);
+
+  //determines if player is starter or bench player on given team, given league's settings
+  abstract void determineRole(Team t, League lg);
 }
 
 //RBs, WRs, TEs will extend this
@@ -76,6 +79,17 @@ class QB extends Player{
     //interceptions and fumbles should be negative in League class, so added to avoid double negative
   }
 
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams qbs field; if less than # that starts, add to starters
+  //increments qbs field to display added quarterback
+  void determineRole(Team t, League lg) {
+    if (t.qbs < lg.qbNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.qbs += 1;
+  }
 }
 
 //Running Back
@@ -83,6 +97,19 @@ class RB extends Flex {
   RB(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
       int fumbles, int twoPtCons) {
     super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
+  }
+
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams rbs field; if less than # starters, add as starter
+  //if flex is less than # flex starters, then starter
+  //increments rbs field to display added rb
+  void determineRole(Team t, League l) {
+    if (t.rbs < lg.rbNum || t.flex < lg.flexNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.rbs += 1;
   }
 }
 
@@ -92,6 +119,19 @@ class WR extends Flex {
       int fumbles, int twoPtCons) {
     super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
   }
+
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams wrs field; if less than # starters, add as starter
+  //if flex is less than # flex starters, then starter
+  //increments wrs field to display added wr
+  void determineRole(Team t, League l) {
+    if (t.wrs < lg.wrNum || t.flex < lg.flexNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.wrs += 1;
+  }
 }
 
 //Tight End
@@ -99,6 +139,19 @@ class TE extends Flex{
   TE(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
       int fumbles, int twoPtCons) {
     super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
+  }
+
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams te field; if less than # starters, add as starter
+  //if flex is less than # flex starters, then starter
+  //increments te field to display added te
+  void determineRole(Team t, League l) {
+    if (t.tes < lg.teNum || t.flex < lg.flexNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.tes += 1;
   }
 }
 
@@ -132,6 +185,18 @@ class K extends Player{
         + this.FG4049Made * lg.FG4049Made + this.FG4049Missed * lg.FG4049Missed
         + this.FG50Made * lg.FG50Made + this.FG50Missed * lg.FG50Missed;
   }
+
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams k field; if less than # that starts, add to starters
+  //increments k field to display added k
+  void determineRole(Team t, League lg) {
+    if (t.k < lg.kickNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.k += 1;
+  }
 }
 
 class DEF extends Player{
@@ -141,17 +206,10 @@ class DEF extends Player{
   int safeties; //amount of safeties
   int defTDs; //amount of defensive touchdowns
   int retTDs; //amount of return touchdowns
-  int ptsAllowed0; //amount of games allowing 0 points
-  int ptsAllowed16; //amount of games allowing 1-6 points
-  int ptsAllowed713; //amount of games allowing 7-13 points
-  int ptsAllowed1420; //amount of games allowing 14-20 points
-  int ptsAllowed2127; //amount of games allowing 21-27 points
-  int ptsAllowed2834; //amount of games allowing 28-34 points
-  int ptsAllowed35; //amount of games allowing 35+ points
+  int ptsAllowed; //amount of points allowed 
 
   DEF(String name, League lg, int sacks, int interceptions, int fumbles, int safeties, int defTDs,
-      int retTDs, int ptsAllowed0, int ptsAllowed16, int ptsAllowed713, int ptsAllowed1420, 
-      int ptsAllowed2127, int ptsAllowed2834, int ptsAllowed35) {
+      int retTDs, int ptsAllowed) {
     super(name, lg);
     this.sacks = sacks;
     this.interceptions = interceptions;
@@ -159,22 +217,45 @@ class DEF extends Player{
     this.safeties = safeties;
     this.defTDs = defTDs;
     this.retTDs = retTDs;
-    this.ptsAllowed0 = ptsAllowed0;
-    this.ptsAllowed16 = ptsAllowed16;
-    this.ptsAllowed713 = ptsAllowed713;
-    this.ptsAllowed1420 = ptsAllowed1420;
-    this.ptsAllowed2127 = ptsAllowed2127;
-    this.ptsAllowed2834 = ptsAllowed2834;
-    this.ptsAllowed35 = ptsAllowed35;
+    this.ptsAllowed = ptsAllowed;
   }
 
   //projects total points for defense given league's settings
   void projectPoints(League lg) {
     this.projectedPoints = this.sacks * lg.sack + this.interceptions * lg.defInt
         + this.fumbles * lg.defFumble + this.safeties * lg.safety + this.defTDs * lg.defTD
-        + this.retTDs * lg.retTD + this.ptsAllowed0 * lg.ptAllowed0 + this.ptsAllowed16 * lg.ptAllowed16
-        + this.ptsAllowed713 * lg.ptAllowed713 + this.ptsAllowed1420 * lg.ptAllowed1420
-        + this.ptsAllowed2127 * lg.ptAllowed2127 + this.ptsAllowed2834 * lg.ptAllowed2834
-        + this.ptsAllowed35 * this.ptsAllowed35;
+        + this.retTDs * lg.retTD + this.calculatePointsAllowed(this.ptsAllowed, lg);
+  }
+
+  //how many points a defense gets depending on how many points it allows
+  double calculatePointsAllowed(int ptsAllowed, League lg) {
+    int pointsPerGame = ptsAllowed / 16;
+    if (pointsPerGame == 0) {
+      return lg.ptAllowed0 * 16;
+    } else if (pointsPerGame > 0 && pointsPerGame <=6) {
+      return lg.ptAllowed16 * 16;
+    } else if (pointsPerGame > 6 && pointsPerGame <= 13) {
+      return lg.ptAllowed713 * 16;
+    } else if (pointsPerGame > 13 && pointsPerGame <= 20) {
+      return lg.ptAllowed1420 * 16;
+    } else if (pointsPerGame > 20 && pointsPerGame <= 27) {
+      return lg.ptAllowed2127 * 16;
+    } else if (pointsPerGame > 27 && pointsPerGame <= 34) {
+      return lg.ptAllowed2834 * 16;
+    } else {
+      return lg.ptAllowed35 * 16;
+    }
+  }
+
+  //determines if player is starter or bench player on given team
+  //EFFECT: checks teams def field; if less than # that starts, add to starters
+  //increments def field to display added defense
+  void determineRole(Team t, League lg) {
+    if (t.def < lg.defNum) {
+      t.starters.add(this);
+    } else {
+      t.bench.add(this);
+    }
+    t.def += 1;
   }
 }
