@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Team{
+class Team {
   ArrayList<Player> roster; //list of players on your team
   ArrayList<Player> starters; //list of starters on your team
   ArrayList<Player> bench; //list of players on your bench
@@ -8,6 +8,15 @@ class Team{
   int rbs; //number of running backs on your team
   int wrs; //number of wide receivers on your team
   int tes; //number of tight ends on your team
+  int flex; //number of flexes on your team
   int k; //number of kickers on your team
-  int d; //number of defenses on your team
+  int def; //number of defenses on your team
+
+  //drafts player onto your team
+  void draftPlayer(Player p, League l) {
+    this.roster.add(p);
+    //double dispatch to determine if player starter or bench 
+    p.determineRole(this, l);
+    l.yourPick += (l.numTeams - l.yourPick % l.numTeams) * 2 + 1;
+  }
 }
