@@ -1,10 +1,61 @@
 import java.util.ArrayList;
 
 class Draft {
-  public static void Main(String[] args) {
+  public static void main(String[] args) {
+    //Examples
+    Team myTeam = new Team(0, 0, 0, 0, 0, 0, 0);
 
-  }
+    League myLeague = new League(0.04, 6.0, -2.0, 0.1, 6.0, 0.5, 0.1, 6.0, -2.0, 2.0, 1.0, -1.0,
+        3.0, 0.0, 4.0, 0.0, 5.0, 0.0, 1.0, 2.0, 2.0, 2.0, 6.0, 6.0, 10.0,
+        8.0, 6.0, 2.0, 1.0, 0.0, 1, 12);
 
+    QB myQB = new QB("Tom Brady",myLeague,5000,35,1000,20,5,2,9);
+    QB yourQB = new QB("Aaron Rodgers",myLeague,4000,40,1500,25,7,3,8);
+    RB myRB = new RB("Adrian Peterson",myLeague,2100,30,50,1500,29,1,5);
+    RB yourRB = new RB("Emmit Smith",myLeague,2000,35,45,2000,25,1,2);
+    WR myWR = new WR("Calvin Johnson",myLeague,1000,20,3000,40,1,2,3);
+    WR yourWR = new WR("Juju",myLeague,1500,25,2500,30,1,2,3);
+    TE myTE = new TE("Jimmy Graham",myLeague,500,5,2500,39,1,1,2);
+    TE yourTE = new TE("Gronk",myLeague,250,10,2000,30,1,1,1);
+    K myK = new K("Lionel Messi",myLeague,20,0,20,0,20,0,20,0);
+    K yourK = new K("Ronaldo",myLeague,20,1,20,1,20,1,20,1);
+    DEF myDEF = new DEF("Giants DEF",myLeague,50,30,10,5,25,10,16);
+    DEF yourDEF = new DEF("Pats DEF",myLeague,20,20,30,30,20,30,15);
+    
+    ArrayList<Player> undrafted = new ArrayList<Player>();
+    undrafted.add(myQB);
+    undrafted.add(yourQB);
+    undrafted.add(myRB);
+    undrafted.add(yourRB);
+    undrafted.add(myWR);
+    undrafted.add(yourWR);
+    undrafted.add(myTE);
+    undrafted.add(yourTE);
+    undrafted.add(myK);
+    undrafted.add(yourK);
+    undrafted.add(myDEF);
+    undrafted.add(yourDEF);
+    
+    Draft d1 = new Draft(undrafted, myLeague, myTeam);
+    
+    //tests
+    System.out.println(myQB.name + myQB.projectedPoints);
+    System.out.println(yourQB.name + yourQB.projectedPoints);
+    System.out.println(myRB.name + myRB.projectedPoints);
+    System.out.println(yourRB.name + yourRB.projectedPoints);
+    System.out.println(myWR.name + myWR.projectedPoints);
+    System.out.println(yourWR.name + yourWR.projectedPoints);
+    System.out.println(myTE.name + myTE.projectedPoints);
+    System.out.println(yourTE.name + yourTE.projectedPoints);
+    System.out.println(myK.name + myK.projectedPoints);
+    System.out.println(yourK.name + yourK.projectedPoints);
+    System.out.println(myDEF.name + myDEF.projectedPoints);
+    System.out.println(yourDEF.name + yourDEF.projectedPoints);
+     for(int i = 0; i<d1.undrafted.size(); i++) {
+       System.out.println(d1.undrafted.get(i).name + d1.undrafted.get(i).xValue);
+     }
+}
+  int pickNum;
   ArrayList<Player> undrafted;
   ArrayList<Player> drafted;
   ArrayList<Player> QBUndrafted;
@@ -13,24 +64,35 @@ class Draft {
   ArrayList<Player> TEUndrafted;
   ArrayList<Player> KUndrafted;
   ArrayList<Player> DEFUndrafted;
-  League league; //rules of the league
-  Team myTeam; //keeps track of players on your team
-
+  League league;
+  Team myTeam;
   Draft(ArrayList<Player> undrafted, League league, Team myTeam){
     this.undrafted = undrafted;
     this.league = league;
     this.myTeam = myTeam;
     this.heapBuild();
     this.heapSort();
+    this.QBUndrafted = new ArrayList<Player>();
+    this.RBUndrafted = new ArrayList<Player>();
+    this.WRUndrafted = new ArrayList<Player>();
+    this.TEUndrafted = new ArrayList<Player>();
+    this.KUndrafted = new ArrayList<Player>();
+    this.DEFUndrafted = new ArrayList<Player>();
     this.createUndraftedPlayersList();
-    this.calculateXValue(this.QBUndrafted, 15);
-    this.calculateXValue(this.RBUndrafted, 36);
-    this.calculateXValue(this.WRUndrafted, 38);
-    this.calculateXValue(this.TEUndrafted, 8);
+    //Should be 15
+    this.calculateXValue(this.QBUndrafted, 1);
+    //should be 36
+    this.calculateXValue(this.RBUndrafted, 1);
+    //should be 38
+    this.calculateXValue(this.WRUndrafted, 1);
+    // should by 8
+    this.calculateXValue(this.TEUndrafted, 1);
     this.calculateXValue(this.KUndrafted, 1);
-    this.calculateXValue(this.DEFUndrafted, 2);
+    //should be 2
+    this.calculateXValue(this.DEFUndrafted, 1);
     this.heapBuildX();
     this.heapSortX();
+    this.needFactor();
   }
 
   //EFFECT: creates a new quarterback and adds it to list of undrafted players
@@ -73,12 +135,10 @@ class Draft {
     this.undrafted.add(new DEF(name, this.league, sacks, interceptions, fumbles, safeties, defTDs,
         retTDs, ptsAllowed));
   }
-
   //Effect: Adds all the Players to a list of undrafted players
   void createUndraftedList() {
-
+    
   }
-
   //Effect: Adds all the Players to a list of their positions
   void createUndraftedPlayersList() {
     for(Player p: this.undrafted) {
@@ -108,18 +168,16 @@ class Draft {
       upHeap(i);
     }
   }
-
   void heapBuildX() {
     for (int i = 1; i < this.undrafted.size(); i++) {
       upHeapX(i);
     }
   }
-
   // Effect:Used when adding elements to the heap; bubbles up the element until a
   // heap is made
   void upHeap(int i) {
     int parentIdx = ((i - 1) / 2);
-    if (this.undrafted.get(i).projectedPoints > this.undrafted.get(parentIdx).projectedPoints) {
+    if (this.undrafted.get(i).projectedPoints < this.undrafted.get(parentIdx).projectedPoints) {
       Player parent = this.undrafted.get(parentIdx);
       Player child = this.undrafted.get(i);
       this.undrafted.set(parentIdx, child);
@@ -134,9 +192,9 @@ class Draft {
     int rightIdx = 2 * i + 2;
     int biggestIdx;
     if (rightIdx <= maxIdx && leftIdx <= maxIdx) {
-      if (this.undrafted.get(i).projectedPoints < this.undrafted.get(leftIdx).projectedPoints
-          || (this.undrafted.get(i).projectedPoints < this.undrafted.get(rightIdx).projectedPoints)) {
-        if (this.undrafted.get(leftIdx).projectedPoints > this.undrafted.get(rightIdx).projectedPoints) {
+      if (this.undrafted.get(i).projectedPoints > this.undrafted.get(leftIdx).projectedPoints
+          || (this.undrafted.get(i).projectedPoints > this.undrafted.get(rightIdx).projectedPoints)) {
+        if (this.undrafted.get(leftIdx).projectedPoints < this.undrafted.get(rightIdx).projectedPoints) {
           biggestIdx = leftIdx;
         }
         else {
@@ -149,7 +207,7 @@ class Draft {
         downHeap(biggestIdx, maxIdx);
       }
     }
-    if (rightIdx > maxIdx && leftIdx <= maxIdx && this.undrafted.get(i).projectedPoints < this.undrafted.get(leftIdx).projectedPoints) {
+    if (rightIdx > maxIdx && leftIdx <= maxIdx && this.undrafted.get(i).projectedPoints > this.undrafted.get(leftIdx).projectedPoints) {
       Player parent = this.undrafted.get(i);
       Player child = this.undrafted.get(leftIdx);
       this.undrafted.set(i, child);
@@ -157,11 +215,11 @@ class Draft {
       downHeap(leftIdx, maxIdx);
     }
   }
-  //Effect:Used when adding elements to the heap; bubbles up the element until a
+  // Effect:Used when adding elements to the heap; bubbles up the element until a
   // heap is made
   void upHeapX(int i) {
     int parentIdx = ((i - 1) / 2);
-    if (this.undrafted.get(i).xValue > this.undrafted.get(parentIdx).xValue) {
+    if (this.undrafted.get(i).xValue < this.undrafted.get(parentIdx).xValue) {
       Player parent = this.undrafted.get(parentIdx);
       Player child = this.undrafted.get(i);
       this.undrafted.set(parentIdx, child);
@@ -176,9 +234,9 @@ class Draft {
     int rightIdx = 2 * i + 2;
     int biggestIdx;
     if (rightIdx <= maxIdx && leftIdx <= maxIdx) {
-      if (this.undrafted.get(i).xValue < this.undrafted.get(leftIdx).xValue
-          || (this.undrafted.get(i).xValue < this.undrafted.get(rightIdx).xValue)) {
-        if (this.undrafted.get(leftIdx).xValue > this.undrafted.get(rightIdx).xValue) {
+      if (this.undrafted.get(i).xValue > this.undrafted.get(leftIdx).xValue
+          || (this.undrafted.get(i).xValue > this.undrafted.get(rightIdx).xValue)) {
+        if (this.undrafted.get(leftIdx).xValue <= this.undrafted.get(rightIdx).xValue) {
           biggestIdx = leftIdx;
         }
         else {
@@ -188,17 +246,19 @@ class Draft {
         Player child = this.undrafted.get(biggestIdx);
         this.undrafted.set(i, child);
         this.undrafted.set(biggestIdx, parent);
-        downHeap(biggestIdx, maxIdx);
+        downHeapX(biggestIdx, maxIdx);
       }
     }
-    if (rightIdx > maxIdx && leftIdx <= maxIdx && this.undrafted.get(i).xValue < this.undrafted.get(leftIdx).xValue) {
+    if (rightIdx > maxIdx && leftIdx <= maxIdx && this.undrafted.get(i).xValue > this.undrafted.get(leftIdx).xValue) {
+      System.out.println("swapo" + undrafted.get(i).xValue + " " + undrafted.get(leftIdx).xValue);
       Player parent = this.undrafted.get(i);
       Player child = this.undrafted.get(leftIdx);
       this.undrafted.set(i, child);
       this.undrafted.set(leftIdx, parent);
-      downHeap(leftIdx, maxIdx);
+      downHeapX(leftIdx, maxIdx);
     }
   }
+
   // Effect:sorts the heap from lowest element value to highest
   void heapSort() {
     int i = 0;
@@ -213,31 +273,34 @@ class Draft {
       downHeap(0, end);
     }
   }
-
   // Effect:sorts the heap from lowest element value to highest
   void heapSortX() {
     int i = 0;
     int end = this.undrafted.size() - 1;
     while (i < this.undrafted.size()) {
+      int q =0;
+      while(q<undrafted.size()) {
+        System.out.print(undrafted.get(q).xValue + " ");
+        q++;
+      }
+      System.out.println("");
       Player max = this.undrafted.get(0);
       Player last = this.undrafted.get(end);
       this.undrafted.set(0, last);
       this.undrafted.set(end, max);
       end--;
       i++;
+      
       downHeapX(0, end);
+      
     }
   }
-
-  //calculates X value for every player in the list
-  //will call for each individual position
+  //Effect:Calculates the xValue of Players
   void calculateXValue(ArrayList<Player> players, int benchmark) {
     for(Player p: players) {
       p.xValue = p.projectedPoints - players.get(benchmark).projectedPoints;
     }
   }
-
-  //recalculates 
   void needFactor() {
     for(Player p: this.undrafted) {
       if((p instanceof QB) && this.myTeam.qbs >= 1) {
@@ -261,33 +324,4 @@ class Draft {
     }
   }
 
-  //drafts a player
-  //EFFECT: removes player from undrafted and position undrafted arraylists
-  //If drafted to your team, calls other method on team
-  void draft(Player p) {
-    //is it your pick?
-    if (this.league.yourPick == this.league.pickNum) {
-      //need to make sure there's room on the bench: not too positive what to do otherwise
-      if (this.myTeam.bench.size() < this.league.benchNum) {
-        this.myTeam.draftPlayer(p, this.league);
-      }
-    }
-    this.undrafted.remove(p);
-    if (p instanceof QB) {
-      this.QBUndrafted.remove(p);
-    } else if (p instanceof RB) {
-      this.RBUndrafted.remove(p);
-    } else if (p instanceof WR) {
-      this.WRUndrafted.remove(p);
-    } else if (p instanceof TE) {
-      this.TEUndrafted.remove(p);
-    } else if (p instanceof K) {
-      this.KUndrafted.remove(p);
-    } else {
-      this.DEFUndrafted.remove(p);
-    }
-    //increments pick number by one
-    this.league.pickNum += 1;
-  }
 }
-
