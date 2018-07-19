@@ -46,6 +46,11 @@ class League {
     this.passInt = passInt;
     this.rushPtsPerYd = rushPtsPerYd;
     this.rushTD = rushTD;
+    this.pointsPerReception = pointsPerReception;
+    this.recPtsPerYD = recPtsPerYD;
+    this.recTD = recTD;
+    this.fumble = fumble;
+    this.twoPtCon = twoPtCon;
     this.PATMade = PATMade;
     this.PATMissed = PATMissed;
     this.FG039Made = FG039Made;
