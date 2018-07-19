@@ -1,7 +1,11 @@
 import java.util.ArrayList;
+import java.io.IOException;  
+import org.jsoup.Jsoup;  
+import org.jsoup.nodes.Document; 
+import org.jsoup.nodes.Element;
 
 class Draft {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException{
     //Examples
     Team myTeam = new Team(0, 0, 0, 0, 0, 0, 0);
 
@@ -23,36 +27,103 @@ class Draft {
     DEF yourDEF = new DEF("Pats DEF",myLeague,20,20,30,30,20,30,15);
     
     ArrayList<Player> undrafted = new ArrayList<Player>();
-    undrafted.add(myQB);
-    undrafted.add(yourQB);
-    undrafted.add(myRB);
-    undrafted.add(yourRB);
-    undrafted.add(myWR);
-    undrafted.add(yourWR);
-    undrafted.add(myTE);
-    undrafted.add(yourTE);
-    undrafted.add(myK);
-    undrafted.add(yourK);
-    undrafted.add(myDEF);
-    undrafted.add(yourDEF);
+    
+    Document doc = Jsoup.connect("https://www.fantasypros.com/nfl/projections/qb.php?week=draft").get();  
+    String title = doc.title();  
+    System.out.println("title is: " + title);  
+    int i = 0;
+    int pass = 2;
+    while(i<50) {
+    	String name = doc.select("td.player-label").get(i).text();
+    	String passYds = doc.select("td.center").get(pass).text();
+    	int comma = passYds.indexOf(',');
+    	if(comma >0) {
+    		passYds = passYds.substring(0, comma) + passYds.substring(comma+1, passYds.length());
+    	}
+    	double passYdsd = Double.parseDouble(passYds);
+    	double passTds = Double.parseDouble(doc.select("td.center").get(pass + 1).text());
+    	double passInts = Double.parseDouble(doc.select("td.center").get(pass + 2).text());
+    	double rushYds = Double.parseDouble(doc.select("td.center").get(pass + 4).text());
+    	double rushTds = Double.parseDouble(doc.select("td.center").get(pass + 5).text());
+    	double fumbles = Double.parseDouble(doc.select("td.center").get(pass + 6).text());
+    	//System.out.println(name + " " + passYdsd + " " + passTds + " " + passInts + " " + rushYds + " " + rushTds + " " + fumbles);
+    	undrafted.add(new QB(name, myLeague, passYdsd, passTds, rushYds, rushTds, passInts, fumbles, 0.0));
+    	i++;
+    	pass +=10;
+    }
+    Document docRB = Jsoup.connect("https://www.fantasypros.com/nfl/projections/rb.php?week=draft").get();
+    int h = 0;
+    int rush = 1;
+    while(h<50) {
+    	String name = docRB.select("td.player-label").get(h).text();
+    	String rushYds = docRB.select("td.center").get(rush).text();
+    	int comma = rushYds.indexOf(',');
+    	if(comma >0) {
+    		rushYds = rushYds.substring(0, comma) + rushYds.substring(comma+1, rushYds.length());
+    	}
+    	double rushYdsd = Double.parseDouble(rushYds);
+    	double rushTds = Double.parseDouble(docRB.select("td.center").get(rush + 1).text());
+    	double recs = Double.parseDouble(docRB.select("td.center").get(rush + 2).text());
+    	double recYds = Double.parseDouble(docRB.select("td.center").get(rush + 3).text());
+    	double recTds = Double.parseDouble(docRB.select("td.center").get(rush + 4).text());
+    	double fumbles = Double.parseDouble(docRB.select("td.center").get(rush + 5).text());
+    	//System.out.println(name + " " + rushYdsd + " " + rushTds + " " + recs + " " + recYds + " " + recTds + " " + fumbles);
+    	undrafted.add(new RB(name, myLeague, rushYdsd, rushTds, recs, recYds, recTds, fumbles, 0 ));
+    	h++;
+    	rush +=8;
+    }
+    Document docWR = Jsoup.connect("https://www.fantasypros.com/nfl/projections/wr.php?week=draft").get();
+    int x = 0;
+    int receptions = 1;
+    while(x<50) {
+    	String name = docWR.select("td.player-label").get(x).text();
+    	double rushYds = Double.parseDouble(docWR.select("td.center").get(receptions).text()); 
+    	double rushTds = Double.parseDouble(docWR.select("td.center").get(receptions + 1).text());
+    	double recs = Double.parseDouble(docWR.select("td.center").get(receptions + 2).text());
+    	String recYds = docWR.select("td.center").get(receptions + 3).text();
+    	int comma = recYds.indexOf(',');
+    	if(comma >0) {
+    		recYds = recYds.substring(0, comma) + recYds.substring(comma+1, recYds.length());
+    	}
+    	double recYdsd = Double.parseDouble(recYds);
+    	double recTds = Double.parseDouble(docWR.select("td.center").get(receptions + 4).text());
+    	double fumbles = Double.parseDouble(docWR.select("td.center").get(receptions + 5).text());
+    	//System.out.println(name + " " + rushYdsd + " " + rushTds + " " + recs + " " + recYds + " " + recTds + " " + fumbles);
+    	undrafted.add(new WR(name, myLeague, rushYds, rushTds, recs, recYdsd, recTds, fumbles, 0 ));
+    	x++;
+    	receptions +=8;
+    }
+    
+//    undrafted.add(myQB);
+//    undrafted.add(yourQB);
+//    undrafted.add(myRB);
+//    undrafted.add(yourRB);
+//    undrafted.add(myWR);
+//    undrafted.add(yourWR);
+//    undrafted.add(myTE);
+//    undrafted.add(yourTE);
+//    undrafted.add(myK);
+//    undrafted.add(yourK);
+//    undrafted.add(myDEF);
+//    undrafted.add(yourDEF);
     
     Draft d1 = new Draft(undrafted, myLeague, myTeam);
     
     //tests
-    System.out.println(myQB.name + myQB.projectedPoints);
-    System.out.println(yourQB.name + yourQB.projectedPoints);
-    System.out.println(myRB.name + myRB.projectedPoints);
-    System.out.println(yourRB.name + yourRB.projectedPoints);
-    System.out.println(myWR.name + myWR.projectedPoints);
-    System.out.println(yourWR.name + yourWR.projectedPoints);
-    System.out.println(myTE.name + myTE.projectedPoints);
-    System.out.println(yourTE.name + yourTE.projectedPoints);
-    System.out.println(myK.name + myK.projectedPoints);
-    System.out.println(yourK.name + yourK.projectedPoints);
-    System.out.println(myDEF.name + myDEF.projectedPoints);
-    System.out.println(yourDEF.name + yourDEF.projectedPoints);
-     for(int i = 0; i<d1.undrafted.size(); i++) {
-       System.out.println(d1.undrafted.get(i).name + d1.undrafted.get(i).xValue);
+//    System.out.println(myQB.name + myQB.projectedPoints);
+//    System.out.println(yourQB.name + yourQB.projectedPoints);
+//    System.out.println(myRB.name + myRB.projectedPoints);
+//    System.out.println(yourRB.name + yourRB.projectedPoints);
+//    System.out.println(myWR.name + myWR.projectedPoints);
+//    System.out.println(yourWR.name + yourWR.projectedPoints);
+//    System.out.println(myTE.name + myTE.projectedPoints);
+//    System.out.println(yourTE.name + yourTE.projectedPoints);
+//    System.out.println(myK.name + myK.projectedPoints);
+//    System.out.println(yourK.name + yourK.projectedPoints);
+//    System.out.println(myDEF.name + myDEF.projectedPoints);
+//    System.out.println(yourDEF.name + yourDEF.projectedPoints);
+     for(int q = 0; q<d1.undrafted.size(); q++) {
+       System.out.println(d1.undrafted.get(q).name + d1.undrafted.get(q).xValue);
      }
 }
   int pickNum;
@@ -80,11 +151,11 @@ class Draft {
     this.DEFUndrafted = new ArrayList<Player>();
     this.createUndraftedPlayersList();
     //Should be 15
-    this.calculateXValue(this.QBUndrafted, 1);
+    this.calculateXValue(this.QBUndrafted, 9);
     //should be 36
-    this.calculateXValue(this.RBUndrafted, 1);
+    this.calculateXValue(this.RBUndrafted, 40);
     //should be 38
-    this.calculateXValue(this.WRUndrafted, 1);
+    this.calculateXValue(this.WRUndrafted, 37);
     // should by 8
     this.calculateXValue(this.TEUndrafted, 1);
     this.calculateXValue(this.KUndrafted, 1);
@@ -96,9 +167,9 @@ class Draft {
   }
 
   //EFFECT: creates a new quarterback and adds it to list of undrafted players
-  void addQB(String name,  int passYds, int passTDs, int rushYds, int rushTDs, int interceptions, 
-      int fumbles, int twoPtCon) {
-    this.undrafted.add(new QB(name, this.league, passYds, passTDs, rushYds, rushTDs, interceptions, fumbles, twoPtCon));
+  void addQB(String name,  double passYds, double passTDs, double rushYds, double rushTDs, double interceptions, 
+      double fumbles) {
+    this.undrafted.add(new QB(name, this.league, passYds, passTDs, rushYds, rushTDs, interceptions, fumbles, 0));
   }
 
   //EFFECT: creates a new running back and adds it to list of undrafted players
@@ -250,7 +321,7 @@ class Draft {
       }
     }
     if (rightIdx > maxIdx && leftIdx <= maxIdx && this.undrafted.get(i).xValue > this.undrafted.get(leftIdx).xValue) {
-      System.out.println("swapo" + undrafted.get(i).xValue + " " + undrafted.get(leftIdx).xValue);
+      //System.out.println("swapo" + undrafted.get(i).xValue + " " + undrafted.get(leftIdx).xValue);
       Player parent = this.undrafted.get(i);
       Player child = this.undrafted.get(leftIdx);
       this.undrafted.set(i, child);
@@ -280,10 +351,10 @@ class Draft {
     while (i < this.undrafted.size()) {
       int q =0;
       while(q<undrafted.size()) {
-        System.out.print(undrafted.get(q).xValue + " ");
+        //System.out.print(undrafted.get(q).xValue + " ");
         q++;
       }
-      System.out.println("");
+      //System.out.println("");
       Player max = this.undrafted.get(0);
       Player last = this.undrafted.get(end);
       this.undrafted.set(0, last);
