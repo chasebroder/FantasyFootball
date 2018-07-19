@@ -21,16 +21,16 @@ abstract class Player {
 
 // RBs, WRs, TEs will extend this
 abstract class Flex extends Player {
-  int rushYds;
-  int rushTDs;
-  int receptions;
-  int receivingYds;
-  int receivingTDs;
-  int fumbles;
-  int twoPtCons;
+  double rushYds;
+  double rushTDs;
+  double receptions;
+  double receivingYds;
+  double receivingTDs;
+  double fumbles;
+  double twoPtCons;
 
-  Flex(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds,
-      int receivingTDs, int fumbles, int twoPtCons) {
+  Flex(String name, League lg, double rushYds, double rushTDs, double receptions, double receivingYds,
+      double receivingTDs, double fumbles, double twoPtCons) {
     super(name, lg);
     this.rushYds = rushYds;
     this.rushTDs = rushTDs;
@@ -52,16 +52,16 @@ abstract class Flex extends Player {
 
 // Quarterback
 class QB extends Player {
-  int passYds;
-  int passTDs;
-  int rushYds;
-  int rushTDs;
-  int interceptions;
-  int fumbles;
-  int twoPtCons;
+  double passYds;
+  double passTDs;
+  double rushYds;
+  double rushTDs;
+  double interceptions;
+  double fumbles;
+  double twoPtCons;
 
-  QB(String name, League lg, int passYds, int passTDs, int rushYds, int rushTDs, int interceptions,
-      int fumbles, int twoPtCons) {
+  QB(String name, League lg, double passYds, double passTDs, double rushYds, double rushTDs, double interceptions,
+      double fumbles, double twoPtCons) {
     super(name, lg);
     this.passYds = passYds;
     this.passTDs = passTDs;
@@ -92,8 +92,8 @@ class QB extends Player {
 }
   // Running Back
   class RB extends Flex {
-    RB(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds,
-        int receivingTDs, int fumbles, int twoPtCons) {
+    RB(String name, League lg, double rushYds, double rushTDs, double receptions, double receivingYds,
+        double receivingTDs, double fumbles, double twoPtCons) {
       super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
     }
 
@@ -110,8 +110,8 @@ class QB extends Player {
 
   // Wide Receiver
   class WR extends Flex {
-    WR(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds,
-        int receivingTDs, int fumbles, int twoPtCons) {
+    WR(String name, League lg, double rushYds, double rushTDs, double receptions, double receivingYds,
+        double receivingTDs, double fumbles, double twoPtCons) {
       super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
     }
 
@@ -128,8 +128,8 @@ class QB extends Player {
 
   // Tight End
   class TE extends Flex {
-    TE(String name, League lg, int rushYds, int rushTDs, int receptions, int receivingYds,
-        int receivingTDs, int fumbles, int twoPtCons) {
+    TE(String name, League lg, double rushYds, double rushTDs, double receptions, double receivingYds,
+        double receivingTDs, double fumbles, double twoPtCons) {
       super(name, lg, rushYds, rushTDs, receptions, receivingYds, receivingTDs, fumbles, twoPtCons);
     }
 
@@ -145,17 +145,17 @@ class QB extends Player {
   }
 
   class K extends Player {
-    int PATsMade;
-    int PATsMissed;
-    int FG039Made; // field goals made between 0-39 yds
-    int FG039Missed; // field goals missed between 0-39 yds
-    int FG4049Made; // field goals made between 40-49 yds
-    int FG4049Missed; // field goals missed between 40-49 yds
-    int FG50Made; // field goals made 50+ yds
-    int FG50Missed; // fields goals missed 50+ yards
+    double PATsMade;
+    double PATsMissed;
+    double FG039Made; // field goals made between 0-39 yds
+    double FG039Missed; // field goals missed between 0-39 yds
+    double FG4049Made; // field goals made between 40-49 yds
+    double FG4049Missed; // field goals missed between 40-49 yds
+    double FG50Made; // field goals made 50+ yds
+    double FG50Missed; // fields goals missed 50+ yards
 
-    K(String name, League lg, int PATsMade, int PATsMissed, int FG039Made, int FG039Missed,
-        int FG4049Made, int FG4049Missed, int FG50Made, int FG50Missed) {
+    K(String name, League lg, double PATsMade, double PATsMissed, double FG039Made, double FG039Missed,
+        double FG4049Made, double FG4049Missed, double FG50Made, double FG50Missed) {
       super(name, lg);
       this.PATsMade = PATsMade;
       this.PATsMissed = PATsMissed;
@@ -186,15 +186,15 @@ class QB extends Player {
   }
 
   class DEF extends Player {
-    int sacks; // amount of sacks
-    int interceptions; // amount of interceptions
-    int fumbles; // amount of funble recoveries
-    int safeties; // amount of safeties
-    int defTDs; // amount of defensive touchdowns
-    int retTDs; // amount of return touchdowns
-    int ptsAllowed; // amount of points allowed
+    double sacks; // amount of sacks
+    double interceptions; // amount of interceptions
+    double fumbles; // amount of funble recoveries
+    double safeties; // amount of safeties
+    double defTDs; // amount of defensive touchdowns
+    double retTDs; // amount of return touchdowns
+    double ptsAllowed; // amount of points allowed
 
-    DEF(String name, League lg, int sacks, int interceptions, int fumbles, int safeties, int defTDs,
+    DEF(String name, League lg, double sacks, double interceptions, double fumbles, double safeties, double defTDs,
         int retTDs, int ptsAllowed) {
       super(name, lg);
       this.sacks = sacks;
@@ -215,8 +215,8 @@ class QB extends Player {
     }
 
     // how many points a defense gets depending on how many points it allows
-    double calculatePointsAllowed(int ptsAllowed, League lg) {
-      int pointsPerGame = ptsAllowed / 16;
+    double calculatePointsAllowed(double ptsAllowed, League lg) {
+      double pointsPerGame = ptsAllowed / 16;
       if (pointsPerGame > 7) {
         return lg.ptAllowed0 * 16;
       }
