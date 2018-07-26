@@ -195,7 +195,7 @@ class QB extends Player {
     double ptsAllowed; // amount of points allowed
 
     DEF(String name, League lg, double sacks, double interceptions, double fumbles, double safeties, double defTDs,
-        int retTDs, int ptsAllowed) {
+        double retTDs, double ptsAllowed) {
       super(name, lg);
       this.sacks = sacks;
       this.interceptions = interceptions;
