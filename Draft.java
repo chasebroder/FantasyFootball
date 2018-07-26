@@ -28,54 +28,54 @@ class Draft {
     
     ArrayList<Player> undrafted = new ArrayList<Player>();
     
-    Document doc = Jsoup.connect("https://www.fantasypros.com/nfl/projections/qb.php?week=draft").get();  
-    String title = doc.title();  
-    System.out.println("title is: " + title);  
-    int i = 0;
-    int pass = 2;
-    while(i<50) {
-    	String name = doc.select("td.player-label").get(i).text();
-    	String passYds = doc.select("td.center").get(pass).text();
-    	int comma = passYds.indexOf(',');
-    	if(comma >0) {
-    		passYds = passYds.substring(0, comma) + passYds.substring(comma+1, passYds.length());
-    	}
-    	double passYdsd = Double.parseDouble(passYds);
-    	double passTds = Double.parseDouble(doc.select("td.center").get(pass + 1).text());
-    	double passInts = Double.parseDouble(doc.select("td.center").get(pass + 2).text());
-    	double rushYds = Double.parseDouble(doc.select("td.center").get(pass + 4).text());
-    	double rushTds = Double.parseDouble(doc.select("td.center").get(pass + 5).text());
-    	double fumbles = Double.parseDouble(doc.select("td.center").get(pass + 6).text());
-    	//System.out.println(name + " " + passYdsd + " " + passTds + " " + passInts + " " + rushYds + " " + rushTds + " " + fumbles);
-    	undrafted.add(new QB(name, myLeague, passYdsd, passTds, rushYds, rushTds, passInts, fumbles, 0.0));
-    	i++;
-    	pass +=10;
-    }
-    Document docRB = Jsoup.connect("https://www.fantasypros.com/nfl/projections/rb.php?week=draft").get();
-    int h = 0;
-    int rush = 1;
-    while(h<50) {
-    	String name = docRB.select("td.player-label").get(h).text();
-    	String rushYds = docRB.select("td.center").get(rush).text();
-    	int comma = rushYds.indexOf(',');
-    	if(comma >0) {
-    		rushYds = rushYds.substring(0, comma) + rushYds.substring(comma+1, rushYds.length());
-    	}
-    	double rushYdsd = Double.parseDouble(rushYds);
-    	double rushTds = Double.parseDouble(docRB.select("td.center").get(rush + 1).text());
-    	double recs = Double.parseDouble(docRB.select("td.center").get(rush + 2).text());
-    	double recYds = Double.parseDouble(docRB.select("td.center").get(rush + 3).text());
-    	double recTds = Double.parseDouble(docRB.select("td.center").get(rush + 4).text());
-    	double fumbles = Double.parseDouble(docRB.select("td.center").get(rush + 5).text());
-    	//System.out.println(name + " " + rushYdsd + " " + rushTds + " " + recs + " " + recYds + " " + recTds + " " + fumbles);
-    	undrafted.add(new RB(name, myLeague, rushYdsd, rushTds, recs, recYds, recTds, fumbles, 0 ));
-    	h++;
-    	rush +=8;
-    }
+//    Document doc = Jsoup.connect("https://www.fantasypros.com/nfl/projections/qb.php?week=draft").get();  
+//    String title = doc.title();  
+//    System.out.println("title is: " + title);  
+//    int i = 0;
+//    int pass = 2;
+//    while(i<50) {
+//    	String name = doc.select("td.player-label").get(i).text();
+//    	String passYds = doc.select("td.center").get(pass).text();
+//    	int comma = passYds.indexOf(',');
+//    	if(comma >0) {
+//    		passYds = passYds.substring(0, comma) + passYds.substring(comma+1, passYds.length());
+//    	}
+//    	double passYdsd = Double.parseDouble(passYds);
+//    	double passTds = Double.parseDouble(doc.select("td.center").get(pass + 1).text());
+//    	double passInts = Double.parseDouble(doc.select("td.center").get(pass + 2).text());
+//    	double rushYds = Double.parseDouble(doc.select("td.center").get(pass + 4).text());
+//    	double rushTds = Double.parseDouble(doc.select("td.center").get(pass + 5).text());
+//    	double fumbles = Double.parseDouble(doc.select("td.center").get(pass + 6).text());
+//    	//System.out.println(name + " " + passYdsd + " " + passTds + " " + passInts + " " + rushYds + " " + rushTds + " " + fumbles);
+//    	undrafted.add(new QB(name, myLeague, passYdsd, passTds, rushYds, rushTds, passInts, fumbles, 0.0));
+//    	i++;
+//    	pass +=10;
+//    }
+//    Document docRB = Jsoup.connect("https://www.fantasypros.com/nfl/projections/rb.php?week=draft").get();
+//    int h = 0;
+//    int rush = 1;
+//    while(h<65) {
+//    	String name = docRB.select("td.player-label").get(h).text();
+//    	String rushYds = docRB.select("td.center").get(rush).text();
+//    	int comma = rushYds.indexOf(',');
+//    	if(comma >0) {
+//    		rushYds = rushYds.substring(0, comma) + rushYds.substring(comma+1, rushYds.length());
+//    	}
+//    	double rushYdsd = Double.parseDouble(rushYds);
+//    	double rushTds = Double.parseDouble(docRB.select("td.center").get(rush + 1).text());
+//    	double recs = Double.parseDouble(docRB.select("td.center").get(rush + 2).text());
+//    	double recYds = Double.parseDouble(docRB.select("td.center").get(rush + 3).text());
+//    	double recTds = Double.parseDouble(docRB.select("td.center").get(rush + 4).text());
+//    	double fumbles = Double.parseDouble(docRB.select("td.center").get(rush + 5).text());
+//    	//System.out.println(name + " " + rushYdsd + " " + rushTds + " " + recs + " " + recYds + " " + recTds + " " + fumbles);
+//    	undrafted.add(new RB(name, myLeague, rushYdsd, rushTds, recs, recYds, recTds, fumbles, 0 ));
+//    	h++;
+//    	rush +=8;
+//    }
     Document docWR = Jsoup.connect("https://www.fantasypros.com/nfl/projections/wr.php?week=draft").get();
     int x = 0;
     int receptions = 1;
-    while(x<50) {
+    while(x<65) {
     	String name = docWR.select("td.player-label").get(x).text();
     	double rushYds = Double.parseDouble(docWR.select("td.center").get(receptions).text()); 
     	double rushTds = Double.parseDouble(docWR.select("td.center").get(receptions + 1).text());
@@ -93,27 +93,44 @@ class Draft {
     	x++;
     	receptions +=8;
     }
-    Document docTE = Jsoup.connect("https://www.fantasypros.com/nfl/projections/te.php?week=draft").get();
-    int t = 0;
-    int receptionsT = 0;
-    while(t<50) {
-    	String name = docTE.select("td.player-label").get(t).text();
-    	double rushYds = 0;
-    	double rushTds = 0;
-    	double recs = Double.parseDouble(docTE.select("td.center").get(receptionsT).text());
-    	String recYds = docTE.select("td.center").get(receptionsT + 1).text();
-    	int comma = recYds.indexOf(',');
-    	if(comma >0) {
-    		recYds = recYds.substring(0, comma) + recYds.substring(comma+1, recYds.length());
-    	}
-    	double recYdsd = Double.parseDouble(recYds);
-    	double recTds = Double.parseDouble(docTE.select("td.center").get(receptionsT + 2).text());
-    	double fumbles = Double.parseDouble(docTE.select("td.center").get(receptionsT + 3).text());
-    	//System.out.println(name + " " + rushYds + " " + rushTds + " " + recs + " " + recYdsd + " " + recTds + " " + fumbles);
-    	undrafted.add(new TE(name, myLeague, rushYds, rushTds, recs, recYdsd, recTds, fumbles, 0 ));
-    	t++;
-    	receptionsT +=5;
-    }
+//    Document docTE = Jsoup.connect("https://www.fantasypros.com/nfl/projections/te.php?week=draft").get();
+//    int t = 0;
+//    int receptionsT = 0;
+//    while(t<50) {
+//    	String name = docTE.select("td.player-label").get(t).text();
+//    	double rushYds = 0;
+//    	double rushTds = 0;
+//    	double recs = Double.parseDouble(docTE.select("td.center").get(receptionsT).text());
+//    	String recYds = docTE.select("td.center").get(receptionsT + 1).text();
+//    	int comma = recYds.indexOf(',');
+//    	if(comma >0) {
+//    		recYds = recYds.substring(0, comma) + recYds.substring(comma+1, recYds.length());
+//    	}
+//    	double recYdsd = Double.parseDouble(recYds);
+//    	double recTds = Double.parseDouble(docTE.select("td.center").get(receptionsT + 2).text());
+//    	double fumbles = Double.parseDouble(docTE.select("td.center").get(receptionsT + 3).text());
+//    	//System.out.println(name + " " + rushYds + " " + rushTds + " " + recs + " " + recYdsd + " " + recTds + " " + fumbles);
+//    	undrafted.add(new TE(name, myLeague, rushYds, rushTds, recs, recYdsd, recTds, fumbles, 0 ));
+//    	t++;
+//    	receptionsT +=5;
+//    }
+//    Document docDEF = Jsoup.connect("http://www.fftoday.com/rankings/playerproj.php?&PosID=99").get();
+//	int r = 0;
+//	int defIdx = 1;
+//	while (r < 20) {
+//		String name = docDEF.select("td.sort1").get(defIdx).text();
+//		double sack = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 2).text());
+//		double fumRec = Double.parseDouble(docDEF.select("td.sort1").get(defIdx+ 3).text());
+//		double ints = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 4).text());
+//		double defTD = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 5).text());
+//		double ptsAllowed = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 6).text());
+//		double safety = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 9).text());
+//		double retTD = Double.parseDouble(docDEF.select("td.sort1").get(defIdx + 10).text());
+//		//System.out.println(name + " " + sack + " " + fumRec + " " + ints + " " + defTD + " " + ptsAllowed + " " + safety + " " + kickretTD);
+//		defIdx += 13;
+//		r++;
+//		undrafted.add(new DEF(name, myLeague, sack, ints, fumRec, safety, defTD, retTD, ptsAllowed));
+//	}
     
 //    undrafted.add(myQB);
 //    undrafted.add(yourQB);
@@ -171,66 +188,22 @@ class Draft {
     this.KUndrafted = new ArrayList<Player>();
     this.DEFUndrafted = new ArrayList<Player>();
     this.createUndraftedPlayersList();
-    //Should be 15
+    //Should be 9
     this.calculateXValue(this.QBUndrafted, 9);
-    //should be 36
+    //should be 40
     this.calculateXValue(this.RBUndrafted, 40);
-    //should be 38
+    //should be 37
     this.calculateXValue(this.WRUndrafted, 37);
-    // should by 8
+    // should by 9
     this.calculateXValue(this.TEUndrafted, 9);
     this.calculateXValue(this.KUndrafted, 1);
     //should be 2
     this.calculateXValue(this.DEFUndrafted, 1);
     this.heapBuildX();
     this.heapSortX();
-    this.needFactor();
+    //this.needFactor();
   }
 
-  //EFFECT: creates a new quarterback and adds it to list of undrafted players
-  void addQB(String name,  double passYds, double passTDs, double rushYds, double rushTDs, double interceptions, 
-      double fumbles) {
-    this.undrafted.add(new QB(name, this.league, passYds, passTDs, rushYds, rushTDs, interceptions, fumbles, 0));
-  }
-
-  //EFFECT: creates a new running back and adds it to list of undrafted players
-  void addRB(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
-      int fumbles, int twoPtCons) {
-    this.undrafted.add(new RB(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
-        fumbles, twoPtCons));
-  }
-
-  //EFFECT: creates a new wide receiver and adds it to list of undrafted players
-  void addWR(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
-      int fumbles, int twoPtCons) {
-    this.undrafted.add(new WR(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
-        fumbles, twoPtCons));
-  }
-
-  //EFFECT: creates a new tight end and adds it to list of undrafted players
-  void addTE(String name, int rushYds, int rushTDs, int receptions, int receivingYds, int receivingTDs,
-      int fumbles, int twoPtCons) {
-    this.undrafted.add(new TE(name, this.league, rushYds, rushTDs, receptions, receivingYds, receivingTDs,
-        fumbles, twoPtCons));
-  }
-
-  //EFFECT: creates a new kicker and adds it to list of undrafted players
-  void addK(String name, int PATsMade, int PATsMissed, int FG039Made, int FG039Missed,
-      int FG4049Made, int FG4049Missed, int FG50Made, int FG50Missed) {
-    this.undrafted.add(new K(name, this.league, PATsMade, PATsMissed, FG039Made, FG039Missed,
-        FG4049Made, FG4049Missed, FG50Made, FG50Missed));
-  }
-
-  //EFFECT: creates a new defense and adds it to list of undrafted players
-  void addDEF(String name, int sacks, int interceptions, int fumbles, int safeties, int defTDs,
-      int retTDs, int ptsAllowed) {
-    this.undrafted.add(new DEF(name, this.league, sacks, interceptions, fumbles, safeties, defTDs,
-        retTDs, ptsAllowed));
-  }
-  //Effect: Adds all the Players to a list of undrafted players
-  void createUndraftedList() {
-    
-  }
   //Effect: Adds all the Players to a list of their positions
   void createUndraftedPlayersList() {
     for(Player p: this.undrafted) {
@@ -316,7 +289,7 @@ class Draft {
       Player child = this.undrafted.get(i);
       this.undrafted.set(parentIdx, child);
       this.undrafted.set(i, parent);
-      upHeap(parentIdx);
+      upHeapX(parentIdx);
     }
   }
   // Effect:used when sorting heap; Swaps first and last items then bubbles down
@@ -328,7 +301,7 @@ class Draft {
     if (rightIdx <= maxIdx && leftIdx <= maxIdx) {
       if (this.undrafted.get(i).xValue > this.undrafted.get(leftIdx).xValue
           || (this.undrafted.get(i).xValue > this.undrafted.get(rightIdx).xValue)) {
-        if (this.undrafted.get(leftIdx).xValue <= this.undrafted.get(rightIdx).xValue) {
+        if (this.undrafted.get(leftIdx).xValue < this.undrafted.get(rightIdx).xValue) {
           biggestIdx = leftIdx;
         }
         else {
