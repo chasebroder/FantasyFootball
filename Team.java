@@ -11,9 +11,12 @@ class Team {
   int flex; // number of flexes on your team
   int k; // number of kickers on your team
   int def; // number of defenses on your team
-  
- // for testing
+
+  // for testing
   Team(int qbs, int rbs, int wrs, int tes, int flex, int k, int def) {
+    this.roster = new ArrayList<Player>();
+    this.starters = new ArrayList<Player>();
+    this.bench = new ArrayList<Player>();
     this.qbs = qbs;
     this.rbs = rbs;
     this.wrs = wrs;
@@ -25,9 +28,20 @@ class Team {
 
   // drafts player onto your team
   void draftPlayer(Player p, League l) {
-    this.roster.add(p);
+    //does player fit roster needs?
+    if (this.eligible(p, l)) {
+      this.roster.add(p);
+    } else {
+      //will eventually replace this
+      throw new IllegalArgumentException("Doesn't fit roster needs");
+    }
     // double dispatch to determine if player starter or bench
-    p.determineRole(this, l);
+    //    p.determineRole(this, l);
     l.yourPick += (l.numTeams - l.yourPick % l.numTeams) * 2 + 1;
+  }
+
+  //can player in this position be drafted onto team?
+  boolean eligible(Player p, League l) {
+    return true;
   }
 }
