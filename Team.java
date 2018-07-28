@@ -36,12 +36,27 @@ class Team {
       throw new IllegalArgumentException("Doesn't fit roster needs");
     }
     // double dispatch to determine if player starter or bench
-    //    p.determineRole(this, l);
+    p.determineRole(this, l);
     l.yourPick += (l.numTeams - l.yourPick % l.numTeams) * 2 + 1;
   }
 
   //can player in this position be drafted onto team?
   boolean eligible(Player p, League l) {
-    return true;
+    if (this.bench.size() < l.benchNum) {
+      return true;
+    } else {
+      //is it still eligible if no more bench spots?
+      //double dispatch
+      return p.eligible(this, l);
+    }
+  }
+
+  //lets you see a list of your team
+  void viewTeam() {
+    int player = 1;
+    while (player <= roster.size()) {
+      System.out.println("Round " + player + ": " + roster.get(player - 1).name);
+      player++;
+    }
   }
 }
